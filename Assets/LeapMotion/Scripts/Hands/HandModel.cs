@@ -34,7 +34,8 @@ public abstract class HandModel : MonoBehaviour {
 
   // Returns the palm position of the hand in relation to the controller.
   public Vector3 GetPalmPosition() {
-    return controller_.transform.TransformPoint(hand_.PalmPosition.ToUnityScaled(mirror_z_axis_)) +
+      Debug.Log(hand_.PalmPosition.ToString() + " - " + GetHandOffset());
+    return GameObject.FindGameObjectWithTag("Fuckers").transform.TransformPoint(hand_.PalmPosition.ToUnityScaled(mirror_z_axis_)) +
            GetHandOffset();
   }
 
@@ -60,15 +61,16 @@ public abstract class HandModel : MonoBehaviour {
 
   // Returns the lower arm center in relation to the controller.
   public Vector3 GetArmCenter() {
-    Vector leap_center = 0.5f * (hand_.Arm.WristPosition + hand_.Arm.ElbowPosition);
+      Vector3 _v3Pos = GameObject.FindGameObjectWithTag("Fuckers").transform.position;
+      Vector leap_center = new Vector(_v3Pos.x, _v3Pos.y, _v3Pos.z); // 0.5f * (hand_.Arm.WristPosition + hand_.Arm.ElbowPosition);
     return controller_.transform.TransformPoint(leap_center.ToUnityScaled(mirror_z_axis_)) +
            GetHandOffset();
   }
 
   // Returns the lower arm elbow position in relation to the controller.
   public Vector3 GetElbowPosition() {
-    Vector3 local_position = hand_.Arm.ElbowPosition.ToUnityScaled(mirror_z_axis_);
-    return controller_.transform.TransformPoint(local_position) + GetHandOffset();
+    //Vector3 local_position = hand_.Arm.ElbowPosition.ToUnityScaled(mirror_z_axis_);
+    return GameObject.FindGameObjectWithTag("Fuckers").transform.position;  //controller_.transform.TransformPoint(local_position) + GetHandOffset();
   }
 
   // Returns the lower arm wrist position in relation to the controller.

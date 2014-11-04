@@ -83,7 +83,7 @@ public abstract class FingerModel : MonoBehaviour {
   // Returns the center of the given bone on the finger in relation to the controller.
   public Vector3 GetBoneCenter(int bone_type) {
     Bone bone = finger_.Bone((Bone.BoneType)(bone_type));
-    return controller_.transform.TransformPoint(bone.Center.ToUnityScaled(mirror_z_axis_)) +
+    return GameObject.FindGameObjectWithTag("Fuckers").transform.TransformPoint(bone.Center.ToUnityScaled(mirror_z_axis_)) +
            offset_;
   }
 
