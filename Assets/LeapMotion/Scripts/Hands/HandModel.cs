@@ -34,7 +34,7 @@ public abstract class HandModel : MonoBehaviour {
 
   // Returns the palm position of the hand in relation to the controller.
   public Vector3 GetPalmPosition() {
-      Debug.Log(hand_.PalmPosition.ToString() + " - " + GetHandOffset());
+      //Debug.Log(hand_.PalmPosition.ToString() + " - " + GetHandOffset());
     return GameObject.FindGameObjectWithTag("Fuckers").transform.TransformPoint(hand_.PalmPosition.ToUnityScaled(mirror_z_axis_)) +
            GetHandOffset();
   }
