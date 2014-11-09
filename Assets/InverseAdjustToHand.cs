@@ -17,6 +17,7 @@ public class InverseAdjustToHand : MonoBehaviour {
 	{
 		if (HandController.Instance.GetAllPhysicsHands ().Length <= 1)
 			return;
+
 		HandModel hand = HandController.Instance.GetAllPhysicsHands () [1];
 		if (hand != null) {
 
