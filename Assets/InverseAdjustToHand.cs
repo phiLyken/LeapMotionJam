@@ -6,6 +6,11 @@ public class InverseAdjustToHand : MonoBehaviour {
 	Vector3 RelativHandPosition;
 	public Transform Anchor;
 
+	void FixedUpdate()
+    {
+		SetAnchor();
+	}
+
 	Vector3 OldLocalAnchorPosition;
 
 	void SetAnchor ()
