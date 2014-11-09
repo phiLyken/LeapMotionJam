@@ -12,6 +12,8 @@ public class JamLeapController : MonoBehaviour {
 		}
 	}
 	GameObject FingerTarget;
+    Vector3 currentVelocityPos;
+    Vector3 currentVelocityNormal;
 
 	public Transform GetHandReferencePoint(HandModel hand){
 		return (hand.GetLeapHand().IsRight   /* && JamLeapController.Instance.IsPointing */  ) ?  JamLeapController.Instance.RightHandAnchor.transform : hand.GetController().transform;
@@ -45,6 +47,7 @@ public class JamLeapController : MonoBehaviour {
 	}
 
 	Vector3 CurrentFingerCastPosition;
+    Vector3 CurrentFingerCastNormal;
 
 	LeapFingerRayCaster FingerCaster;
 	public bool IsPointing{
@@ -75,13 +78,16 @@ public class JamLeapController : MonoBehaviour {
 		}
 
 		FingerTarget.transform.position = CurrentFingerCastPosition;
-		FingerTarget.transform.rotation = Quaternion.LookRotation( FingerCaster.FingerCastNormal );
+        FingerTarget.transform.rotation = Quaternion.LookRotation(CurrentFingerCastNormal);
 	}
 
 	void UpdateFingerCastPosition(){
 
 		if( FingerCaster != null ){
-			CurrentFingerCastPosition = Vector3.Lerp( CurrentFingerCastPosition, FingerCaster.FingerCastPosition, FingerCaster.Confidence * Time.deltaTime * 20 );
+            CurrentFingerCastPosition = Vector3.SmoothDamp(CurrentFingerCastPosition, FingerCaster.FingerCastPosition, ref currentVelocityPos, 0.2f);
+            CurrentFingerCastNormal = Vector3.SmoothDamp(CurrentFingerCastNormal, FingerCaster.FingerCastNormal, ref currentVelocityNormal, 0.2f); 
+            
+            // Vector3.Lerp( CurrentFingerCastPosition, // FingerCaster.FingerCastPosition, FingerCaster.Confidence * Time.deltaTime * 20 );
 		//	Debug.Log(FingerCaster.Confidence);
 		} 
 	}
