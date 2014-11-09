@@ -61,7 +61,7 @@ public abstract class FingerModel : MonoBehaviour {
   public Vector3 GetTipPosition() {
     Vector3 local_tip =
         finger_.Bone((Bone.BoneType.TYPE_DISTAL)).NextJoint.ToUnityScaled(mirror_z_axis_);
-    return controller_.transform.TransformPoint(local_tip) + offset_;
+		return   JamLeapController.Instance.GetHandReferencePoint(this).TransformPoint(local_tip) + offset_;
   }
 
   // Returns the location of the given joint on the finger in relation to the controller.
@@ -71,7 +71,7 @@ public abstract class FingerModel : MonoBehaviour {
     
     Vector3 local_position =
         finger_.Bone((Bone.BoneType)(joint)).PrevJoint.ToUnityScaled(mirror_z_axis_);
-    return controller_.transform.TransformPoint(local_position) + offset_;
+		return  JamLeapController.Instance.GetHandReferencePoint(this).TransformPoint(local_position) + offset_;
   }
 
   // Returns a ray from the tip of the finger in the direction it is pointing.
@@ -83,7 +83,7 @@ public abstract class FingerModel : MonoBehaviour {
   // Returns the center of the given bone on the finger in relation to the controller.
   public Vector3 GetBoneCenter(int bone_type) {
     Bone bone = finger_.Bone((Bone.BoneType)(bone_type));
-    return GameObject.FindGameObjectWithTag("Fuckers").transform.TransformPoint(bone.Center.ToUnityScaled(mirror_z_axis_)) +
+		return  JamLeapController.Instance.GetHandReferencePoint(this).transform.TransformPoint(bone.Center.ToUnityScaled(mirror_z_axis_)) +
            offset_;
   }
 
@@ -97,6 +97,6 @@ public abstract class FingerModel : MonoBehaviour {
   public Quaternion GetBoneRotation(int bone_type) {
     Quaternion local_rotation =
         finger_.Bone((Bone.BoneType)(bone_type)).Basis.Rotation(mirror_z_axis_);
-    return controller_.transform.rotation * local_rotation;
+		return JamLeapController.Instance.GetHandReferencePoint(this).transform.rotation * local_rotation;
   }
 }

@@ -14,7 +14,8 @@ public class HandController : MonoBehaviour {
   // Reference distance from thumb base to pinky base in mm.
   protected const float GIZMO_SCALE = 5.0f;
   protected const float MM_TO_M = 0.001f;
-
+  public delegate void HandEvents(HandModel hand);
+  public event HandEvents OnCreateHand;
   public bool separateLeftRight = false;
   public HandModel leftGraphicsModel;
   public HandModel leftPhysicsModel;
@@ -44,7 +45,9 @@ public class HandController : MonoBehaviour {
   protected Dictionary<int, HandModel> hand_graphics_;
   protected Dictionary<int, HandModel> hand_physics_;
   protected Dictionary<int, ToolModel> tools_;
-  
+  public static HandController Instance;
+  public List<HandModel> Hands;
+
   void OnDrawGizmos() {
     // Draws the little Leap Motion Controller in the Editor view.
     Gizmos.matrix = Matrix4x4.Scale(GIZMO_SCALE * Vector3.one);
@@ -53,7 +56,7 @@ public class HandController : MonoBehaviour {
 
   void Awake() {
     leap_controller_ = new Controller();
-
+	Instance = this;
     // Optimize for top-down tracking if on head mounted display.
     Controller.PolicyFlag policy_flags = leap_controller_.PolicyFlags;
     if (isHeadMounted)
@@ -85,10 +88,18 @@ public class HandController : MonoBehaviour {
       Leap.Utils.IgnoreCollisions(hand.gameObject, to_ignore, ignore);
   }
 
+  protected void AddRayCaster(HandModel hand){
+
+	
+  }
+
   protected HandModel CreateHand(HandModel model) {
+	
     HandModel hand_model = Instantiate(model, transform.position, transform.rotation)
                            as HandModel;
     hand_model.gameObject.SetActive(true);
+//	hand_model.gameObject.transform.parent = this.gameObject.transform;
+
     Leap.Utils.IgnoreCollisions(hand_model.gameObject, gameObject);
     return hand_model;
   }
@@ -100,16 +111,19 @@ public class HandController : MonoBehaviour {
       hand_model.SetLeapHand(null);
   }
 
+
   protected void UpdateHandModels(Dictionary<int, HandModel> all_hands,
                                   HandList leap_hands,
                                   HandModel left_model, HandModel right_model) {
     List<int> ids_to_check = new List<int>(all_hands.Keys);
 
     // Go through all the active hands and update them.
+	
     int num_hands = leap_hands.Count;
     for (int h = 0; h < num_hands; ++h) {
       Hand leap_hand = leap_hands[h];
       
+	
       HandModel model = (mirrorZAxis != leap_hand.IsLeft) ? left_model : right_model;
 
       // If we've mirrored since this hand was updated, destroy it.
@@ -124,7 +138,11 @@ public class HandController : MonoBehaviour {
         ids_to_check.Remove(leap_hand.Id);
 
         // Create the hand and initialized it if it doesn't exist yet.
-        if (!all_hands.ContainsKey(leap_hand.Id)) {
+		if ( !all_hands.ContainsKey(leap_hand.Id)) {
+		
+		if( leap_hand.IsRight && !JamLeapController.Instance.IsPointing) continue;
+
+
           HandModel new_hand = CreateHand(model);
           new_hand.SetLeapHand(leap_hand);
           new_hand.MirrorZAxis(mirrorZAxis);
@@ -137,6 +155,7 @@ public class HandController : MonoBehaviour {
           new_hand.InitHand();
           new_hand.UpdateHand();
           all_hands[leap_hand.Id] = new_hand;
+		  if( OnCreateHand != null) OnCreateHand(new_hand);
         }
         else {
           // Make sure we update the Leap Hand reference.
