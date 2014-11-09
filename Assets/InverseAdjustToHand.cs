@@ -5,7 +5,8 @@ public class InverseAdjustToHand : MonoBehaviour {
 
 	Vector3 RelativHandPosition;
 	public Transform Anchor;
-	void FixedUpdate(){
+	void FixedUpdate()
+    {
 
 		if( HandController.Instance.GetAllPhysicsHands().Length <= 	1) return;
 
