@@ -5,12 +5,15 @@ public class JamLeapController : MonoBehaviour {
 
 	public GameObject FingerPointTargetObjectPrefab;
 	public LayerMask HitLayers;
+	public Vector3 RightHandCreatePosition;
 	public static JamLeapController Instance;
+
 	public GameObject RightHandAnchor {
 		get {
-			return GameObject.FindGameObjectWithTag("Fuckers");
+			return PortalManager.Instance.GetActivePortal().Pivot.gameObject;
 		}
 	}
+
 	GameObject FingerTarget;
     Vector3 currentVelocityPos;
     Vector3 currentVelocityNormal;
@@ -46,8 +49,8 @@ public class JamLeapController : MonoBehaviour {
 
 	}
 
-	Vector3 CurrentFingerCastPosition;
-    Vector3 CurrentFingerCastNormal;
+	public Vector3 CurrentFingerCastPosition;
+	public Vector3 CurrentFingerCastNormal;
 
 	LeapFingerRayCaster FingerCaster;
 	public bool IsPointing{
@@ -63,6 +66,10 @@ public class JamLeapController : MonoBehaviour {
 			Debug.Log( GetIndexFingerTip(hand).name);
 			FingerCaster = GetIndexFingerTip(hand).gameObject.AddComponent<LeapFingerRayCaster>();
 			FingerCaster.Init( hand, HitLayers);
+
+		} else if ( hand.GetLeapHand().IsRight){
+			RightHandCreatePosition = GetHandReferencePoint(hand).InverseTransformPoint( hand.GetWristPosition() );
+			Debug.DrawLine( GetHandReferencePoint(hand).position, RightHandCreatePosition, Color.white);
 		}
 	} 
 

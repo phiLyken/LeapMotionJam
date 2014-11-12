@@ -5,7 +5,7 @@ public class InverseAdjustToHand : MonoBehaviour {
 
 	Vector3 RelativHandPosition;
 	public Transform Anchor;
-
+	public Transform HandMovementOffset;
 	void FixedUpdate()
     {
 		SetAnchor();
@@ -19,24 +19,15 @@ public class InverseAdjustToHand : MonoBehaviour {
 			return;
 
 		HandModel hand = HandController.Instance.GetAllPhysicsHands () [1];
+
 		if (hand != null) {
 
-			Vector3 pos = hand.GetWristPosition ();
-			Vector3 dif = pos - Anchor.position;
-			Vector3 zOffset = transform.forward * YAccelleration;
-			Vector3 newAnchorPosition = (transform.position - dif);
-			newAnchorPosition = transform.InverseTransformPoint( newAnchorPosition);
-			newAnchorPosition.z = 0;
-			Anchor.localPosition = newAnchorPosition;
 
-			YAccelleration =  ( OldLocalAnchorPosition.z - Anchor.localPosition.z ) ;
+			Anchor.localPosition = JamLeapController.Instance.RightHandCreatePosition ;
 
-			OldLocalAnchorPosition = Anchor.localPosition;
 
-			Debug.Log(YAccelleration);
-			Debug.DrawLine (Anchor.position, pos, Color.red);
-			Debug.DrawRay (transform.position, dif, Color.cyan);
-			Debug.DrawRay( transform.position, zOffset * 20, Color.yellow);
+
+
 		}
 	}
 
@@ -44,8 +35,7 @@ public class InverseAdjustToHand : MonoBehaviour {
 	public float HandDistance;
 
 
-	float YAccelleration;
-
+	Vector3 Accelleration;
 	void LateUpdate(){
 		SetAnchor ();
 	}

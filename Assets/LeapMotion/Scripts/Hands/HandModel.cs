@@ -31,7 +31,7 @@ public abstract class HandModel : MonoBehaviour {
 		return JamLeapController.Instance.GetHandReferencePoint(this).TransformPoint(scaled_wrist_position) -
 			JamLeapController.Instance.GetHandReferencePoint(this).transform.position;
   }
-
+  
   // Returns the palm position of the hand in relation to the controller.
   public Vector3 GetPalmPosition() {
 //      Debug.Log(hand_.PalmPosition.ToString() + " - " + GetHandOffset());
