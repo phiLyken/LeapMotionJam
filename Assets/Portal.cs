@@ -10,7 +10,7 @@ public class Portal : MonoBehaviour {
 
 	Color StartColor;
 
-	void OnEnable(){
+	void Start(){
 		StartColor = mMesh.renderer.material.color;
 		PortalManager.Instance.RegisterPortal(this);
 	}
