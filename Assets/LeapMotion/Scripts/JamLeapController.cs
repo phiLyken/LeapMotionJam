@@ -62,8 +62,7 @@ public class JamLeapController : MonoBehaviour {
 
 		if( /* HandController.Instance.GetAllPhysicsHands().Length == 1 */ hand.GetLeapHand().IsLeft && IsPhysicsHand(hand)){
 			
-			Debug.Log("Created FIRST physics hand");
-			Debug.Log( GetIndexFingerTip(hand).name);
+	
 			FingerCaster = GetIndexFingerTip(hand).gameObject.AddComponent<LeapFingerRayCaster>();
 			FingerCaster.Init( hand, HitLayers);
 
@@ -93,9 +92,7 @@ public class JamLeapController : MonoBehaviour {
 		if( FingerCaster != null ){
             CurrentFingerCastPosition = Vector3.SmoothDamp(CurrentFingerCastPosition, FingerCaster.FingerCastPosition, ref currentVelocityPos, 0.2f);
             CurrentFingerCastNormal = Vector3.SmoothDamp(CurrentFingerCastNormal, FingerCaster.FingerCastNormal, ref currentVelocityNormal, 0.2f); 
-            
-            // Vector3.Lerp( CurrentFingerCastPosition, // FingerCaster.FingerCastPosition, FingerCaster.Confidence * Time.deltaTime * 20 );
-		//	Debug.Log(FingerCaster.Confidence);
+
 		} 
 	}
 	Transform GetIndexFingerTip(HandModel hand){

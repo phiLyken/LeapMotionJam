@@ -98,7 +98,7 @@ public class HandController : MonoBehaviour {
     HandModel hand_model = Instantiate(model, transform.position, transform.rotation)
                            as HandModel;
     hand_model.gameObject.SetActive(true);
-//	hand_model.gameObject.transform.parent = this.gameObject.transform;
+
 
     Leap.Utils.IgnoreCollisions(hand_model.gameObject, gameObject);
     return hand_model;
@@ -140,7 +140,7 @@ public class HandController : MonoBehaviour {
         // Create the hand and initialized it if it doesn't exist yet.
 		if ( !all_hands.ContainsKey(leap_hand.Id)) {
 		
-		if( leap_hand.IsRight && !JamLeapController.Instance.IsPointing) continue;
+		  if( leap_hand.IsRight && !PortalManager.Instance.IsPortalActive ) continue;
 
 
           HandModel new_hand = CreateHand(model);

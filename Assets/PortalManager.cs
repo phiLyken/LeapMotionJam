@@ -17,8 +17,9 @@ public class PortalManager : MonoBehaviour {
 
 	}
 
-	public bool IsPortalActive(){
-		return ActivePortal != null;
+	public bool IsPortalActive{
+		get { return ActivePortal != null;
+		}
 	}
 
 	public Portal GetActivePortal(){
