@@ -8,7 +8,9 @@
 *.user
 *.booproj
 
+
 /Library
+/Assets/UnityVS
 /Library/FailedAssetImports.txt
 /Library/cache/
 /Library/previews/
