@@ -8,6 +8,12 @@ public class TouchTrigger : MonoBehaviour {
 
 	bool triggered;
 
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(1, 0, 0, 0.5F);
+        Gizmos.DrawSphere(transform.position, transform.localScale.x * ((SphereCollider)collider).radius);
+    }
+
 	void OnTriggerEnter( Collider col){
 		if(TriggerOnlyOnce && triggered) return;
 
