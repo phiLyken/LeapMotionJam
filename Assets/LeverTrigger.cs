@@ -25,7 +25,6 @@ public class LeverTrigger : MonoBehaviour
                 (transform.localRotation.eulerAngles.x > (360.0f + m_hingeJoint.limits.min) &&
                 transform.localRotation.eulerAngles.x < (360.0f + m_hingeJoint.limits.min + triggerAngleArea)))
             {
-                Debug.Log("Trigger");
                 m_trigger.trigger();
 
                 m_bNeedsReset = true;
