@@ -49,6 +49,7 @@ public class JamLeapController : MonoBehaviour {
 
 	}
 
+
 	public Vector3 CurrentFingerCastPosition;
 	public Vector3 CurrentFingerCastNormal;
 
@@ -67,7 +68,9 @@ public class JamLeapController : MonoBehaviour {
 			FingerCaster.Init( hand, HitLayers);
 
 		} else if ( hand.GetLeapHand().IsRight){
+
 			RightHandCreatePosition = GetHandReferencePoint(hand).InverseTransformPoint( hand.GetWristPosition() );
+			SetLayerRecursively(hand.gameObject, 9);
 			Debug.DrawLine( GetHandReferencePoint(hand).position, RightHandCreatePosition, Color.white);
 		}
 	} 
@@ -106,5 +109,15 @@ public class JamLeapController : MonoBehaviour {
 		}
 		//last Bone is the tip
 		return Finger.bones[3].transform;
+	}
+
+	void SetLayerRecursively(GameObject obj, int newLayer  )
+	{
+		obj.layer = newLayer;
+		
+		foreach( Transform child in obj.transform )
+		{
+			SetLayerRecursively( child.gameObject, newLayer );
+		}
 	}
 }

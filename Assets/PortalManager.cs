@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class PortalManager : MonoBehaviour {
 
+	public delegate void PortalEvent(Portal p);
+	public  event PortalEvent OnPortalActivation;
 	public static PortalManager Instance;
 
 	public float ActivateRange;
@@ -29,6 +31,7 @@ public class PortalManager : MonoBehaviour {
 	public void ActivatePortat(Portal p){
 		DeactivateCurrentPortal();
 		ActivePortal = p;
+		if( OnPortalActivation != null) OnPortalActivation(p);
 		ActivePortal.Activate();
 	}
 
