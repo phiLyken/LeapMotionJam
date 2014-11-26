@@ -14,7 +14,7 @@ public class PortalManager : MonoBehaviour {
 	public List<GameObject> Portals = new List<GameObject>();
 	Portal ActivePortal;
 
-	void Awake(){
+	void Awake(){ 
 		Instance = this;
 
 	}
@@ -49,6 +49,10 @@ public class PortalManager : MonoBehaviour {
 
 		if( JamLeapController.Instance.IsPointing){
 			SearchForPortals();
+		}
+
+		if( IsPortalActive ){
+			Debug.DrawRay( ActivePortal.transform.position, JamLeapController.Instance.RightHandCreatePosition);
 		}
 	}
 

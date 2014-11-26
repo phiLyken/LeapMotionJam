@@ -20,6 +20,8 @@ public abstract class HandModel : MonoBehaviour {
   protected HandController controller_;
   protected bool mirror_z_axis_ = false;
 
+
+
   public Vector3 GetHandOffset() {
     if (controller_ == null || hand_ == null)
       return Vector3.zero;
@@ -79,6 +81,7 @@ public abstract class HandModel : MonoBehaviour {
 		return JamLeapController.Instance.GetHandReferencePoint(this).TransformPoint(local_position) + GetHandOffset();
   }
 
+
   // Returns the rotation quaternion of the arm in relation to the controller.
   public Quaternion GetArmRotation() {
     Quaternion local_rotation = hand_.Arm.Basis.Rotation(mirror_z_axis_);
@@ -115,8 +118,10 @@ public abstract class HandModel : MonoBehaviour {
     return controller_;
   }
 
+	public Vector3 CreateOffset;
   public void SetController(HandController controller) {
     controller_ = controller;
+
     for (int i = 0; i < fingers.Length; ++i) {
       if (fingers[i] != null)
         fingers[i].SetController(controller_);

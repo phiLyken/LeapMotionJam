@@ -8,6 +8,7 @@ public class JamLeapController : MonoBehaviour {
 	public Vector3 RightHandCreatePosition;
 	public static JamLeapController Instance;
 
+	public float MovementModifier;
 	public GameObject RightHandAnchor {
 		get {
 			return PortalManager.Instance.GetActivePortal().Pivot.gameObject;
@@ -61,17 +62,17 @@ public class JamLeapController : MonoBehaviour {
 	}
 	public void OnCreateHand(HandModel hand){
 
-		if( /* HandController.Instance.GetAllPhysicsHands().Length == 1 */ hand.GetLeapHand().IsLeft && IsPhysicsHand(hand)){
+		if(  hand.GetLeapHand().IsLeft && IsPhysicsHand(hand)){
 			
 	
-			FingerCaster = GetIndexFingerTip(hand).gameObject.AddComponent<LeapFingerRayCaster>();
-			FingerCaster.Init( hand, HitLayers);
+			AddCaster (hand);
 
 		} else if ( hand.GetLeapHand().IsRight){
+			if(IsPhysicsHand(hand))
+				AddParticlesToHand(hand);
 
-			RightHandCreatePosition = GetHandReferencePoint(hand).InverseTransformPoint( hand.GetWristPosition() );
 			SetLayerRecursively(hand.gameObject, 9);
-			Debug.DrawLine( GetHandReferencePoint(hand).position, RightHandCreatePosition, Color.white);
+			PortalManager.Instance.GetActivePortal().SetHand(hand);
 		}
 	} 
 
@@ -79,6 +80,20 @@ public class JamLeapController : MonoBehaviour {
 		if( FingerCaster != null){
 			UpdateFingerCastPosition();
 			UpdateFingerTargetObject();
+		}
+	}
+
+	void AddCaster (HandModel hand)
+	{
+		FingerCaster = GetIndexFingerTip (hand).gameObject.AddComponent<LeapFingerRayCaster> ();
+		FingerCaster.Init (hand, HitLayers);
+	}
+
+	void AddParticlesToHand(HandModel hand){
+		foreach (BoxCollider col in hand.GetComponentsInChildren<BoxCollider>()){
+			GameObject particleGo = Instantiate( Resources.Load("HandParticles"), col.transform.position, col.transform.rotation) as GameObject;
+			particleGo.transform.parent = col.transform;
+			Debug.Log("asdsad");
 		}
 	}
 	void UpdateFingerTargetObject(){

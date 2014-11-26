@@ -53,6 +53,6 @@ public class LineRendererSegment{
 			previousPoints.Add(positions[i]);
 		}
 
-		Debug.Log( previousPoints.Count);
+
 	}
 }
